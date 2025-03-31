@@ -23,8 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1")
 public class PromptController {
 
-    @Autowired
-    PromptService promptService;
+    private final PromptService promptService;
 
     @PostMapping(value = "/generate-response", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> generateResponse(@RequestBody String input) {

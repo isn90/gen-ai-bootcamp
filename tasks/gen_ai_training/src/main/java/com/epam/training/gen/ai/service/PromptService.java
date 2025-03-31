@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PromptService {
 
-    private static final Logger log = LoggerFactory.getLogger(PromptService.class);
     private final OpenAIAsyncClient aiAsyncClient;
     private final String deploymentName;
     
