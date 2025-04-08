@@ -31,7 +31,7 @@ public class PromptController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            var chats = promptService.getChatCompletions(payload);
+            var chats = promptService.getPromptResponse(payload);
             response.put("status", "success");
             response.put("data", chats);
             return ResponseEntity.ok(response);
