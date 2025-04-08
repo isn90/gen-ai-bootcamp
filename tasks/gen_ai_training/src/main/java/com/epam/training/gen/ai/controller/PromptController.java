@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.epam.training.gen.ai.model.RequestPayload;
+import com.epam.training.gen.ai.service.SemanticKernelImageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.epam.training.gen.ai.service.PromptService;
 
@@ -25,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PromptController {
 
     private final PromptService promptService;
+    //private final SemanticKernelImageGenerator imageGenerator;
 
     @PostMapping(value = "/generate-response", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> generateResponse(@RequestBody RequestPayload payload) {
@@ -41,4 +40,9 @@ public class PromptController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
         }
     }
+
+    /*@PostMapping(value = "/generate-image", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String generateImage(@RequestBody RequestPayload payload) {
+        return imageGenerator.generateImage(payload);
+    }*/
 }
