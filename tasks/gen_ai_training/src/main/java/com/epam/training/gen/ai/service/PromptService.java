@@ -115,7 +115,7 @@ public class PromptService {
         List<String> urls = imageGenerations.getData().stream()
 				.map(ImageGenerationData::getUrl)
 				.collect(Collectors.toList());
-		System.out.println(urls);
+		log.info("urls={}", urls);
 		return urls;
 	}
 
