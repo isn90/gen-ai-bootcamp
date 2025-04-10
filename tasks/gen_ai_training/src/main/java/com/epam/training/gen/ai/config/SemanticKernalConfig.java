@@ -4,6 +4,7 @@ import com.azure.ai.openai.OpenAIAsyncClient;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
 import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class SemanticKernalConfig {
 
     @Bean
-    public ChatCompletionService chatCompletionService(OpenAIAsyncClient asyncClient, @Value("${client-openai-deployment-name}") String deploymentName) {
+    public ChatCompletionService chatCompletionService(@Qualifier("genericOpenAiAsyncClient") OpenAIAsyncClient asyncClient, @Value("${client-openai-deployment-name}") String deploymentName) {
         return OpenAIChatCompletion.builder()
                 .withOpenAIAsyncClient(asyncClient)
                 .withModelId(deploymentName)

@@ -17,10 +17,18 @@ public class OpenAIConfig {
     @Value("${client-openai-endpoint}")
     private String endpoint;
 
-    @Bean
+    @Bean("genericOpenAiAsyncClient")
     public OpenAIAsyncClient openAIAsyncClient() {
         return new OpenAIClientBuilder()
                 .credential(new AzureKeyCredential(apiKey))
+                .endpoint(endpoint)
+                .buildAsyncClient();
+    }
+
+    @Bean("imageGenerationOpenAiAsyncClient")
+    public OpenAIAsyncClient openAIAsyncClientBeanForImageGeneration(@Value("${azure-openai-imageGenerationKey}") String key, @Value("${azure-openai-imageGenerationEndpoint}") String endpoint) {
+        return new OpenAIClientBuilder()
+                .credential(new AzureKeyCredential(key))
                 .endpoint(endpoint)
                 .buildAsyncClient();
     }
