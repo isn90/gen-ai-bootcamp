@@ -27,18 +27,18 @@ public class PromptController {
     private final PromptService promptService;
 
     @PostMapping(value = "/generate-response", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> generateResponse(@RequestBody RequestPayload payload) {
+    public ResponseEntity<String> generateResponse(@RequestBody RequestPayload payload) {
         Map<String, Object> response = new HashMap<>();
 
         try {
             var chats = promptService.getPromptResponse(payload);
             response.put("status", "success");
             response.put("data", chats);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(chats);
         } catch (Exception e) {
             response.put("status", "error");
             response.put("message", "Error generating response");
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response.toString());
         }
     }
 }
