@@ -132,32 +132,6 @@ public class PromptService {
 				.map(chatMessageContent -> chatMessageContent.getAuthorRole().name()
 						+ " : " + chatMessageContent.getContent())
 				.collect(Collectors.joining("\n\n"));
-		/*List<String> chats = new ArrayList<>();
-		log.info("Building chat config deploymentName={}", deploymentName);
-		ChatCompletionService chatCompletionService = buildChatCompletionService(deploymentName);
-		log.info("chatCompletionService={}", chatCompletionService);
-
-		//Prompt Execution Settings Initialization
-		InvocationContext context = buildInvocationContext(payload, deploymentName);
-		log.info("context={}", context);
-
-		List<ChatMessageContent<?>> messageResponse = chatCompletionService.getChatMessageContentsAsync(chatHistory, kernel, context)
-				.onErrorMap(ex -> new Exception(ex.getMessage())).block();
-		log.info("messageResponse={}", messageResponse);
-
-		if(messageResponse != null) {
-			//adding to system messages in chatHistory
-			chatHistory.addSystemMessage(messageResponse.stream()
-					.map(ChatMessageContent::getContent)
-					.collect(Collectors.joining()));
-			log.info("chatHistory messages={}", chatHistory.getMessages());
-
-			chats = messageResponse.stream()
-					.map(ChatMessageContent::getContent)
-					.toList();
-		}
-		log.info("chats={}", chats);
-		return chats;*/
 	}
 
 	public String generateImage(String prompt, String model) {
