@@ -61,6 +61,7 @@ public class PromptService {
 		this.imageModel = modelConfig.getImageModel();
     }
 
+
 	public String getPromptResponse(RequestPayload payload) {
 		log.info("payload={}", payload);
 		String deploymentName = "";
@@ -111,7 +112,6 @@ public class PromptService {
 						ContextVariableTypeConverter.builder(BookTicketsPlugin.class)
 								.toPromptString(new Gson()::toJson)
 								.build());
-
 		//Prompt Execution Settings Initialization
 		InvocationContext context = buildInvocationContext(payload, deploymentName);
 		log.info("context={}", context);
@@ -154,6 +154,27 @@ public class PromptService {
 		return urls.get(0);
 	}
 
+	public String generateImage(String prompt, String model) {
+
+		ImageGenerationOptions options = new ImageGenerationOptions(prompt)
+				.setN(1) // Number of images to generate
+				.setQuality(ImageGenerationQuality.HD)
+				.setSize(ImageSize.SIZE1024X1024); // Image resolution
+
+		ImageGenerations imageGenerations = imageGenerationAiAsyncClient.getImageGenerations(model, options)
+				.doOnNext(res -> System.out.println("ImageGenerations API Response: " + res))
+				.doOnError(err -> System.err.println("Error occurred: " + err.getMessage()))
+				.block();
+
+        assert imageGenerations != null;
+        List<String> urls = imageGenerations.getData().stream()
+				.map(ImageGenerationData::getUrl)
+				.collect(Collectors.toList());
+		log.info("urls={}", urls);
+		return urls.get(0);
+	}
+
+
 	private InvocationContext buildInvocationContext(RequestPayload payload, String deploymentName) {
 		return InvocationContext.builder()
 				.withPromptExecutionSettings(PromptExecutionSettings.builder()
@@ -163,6 +184,13 @@ public class PromptService {
 						.withResponseFormat(ResponseFormat.Type.TEXT)
 						.build())
 				.withToolCallBehavior(ToolCallBehavior.allowAllKernelFunctions(true))
+				.build();
+	}
+
+	private ChatCompletionService buildChatCompletionService(String model) {
+		return OpenAIChatCompletion.builder()
+				.withOpenAIAsyncClient(aiAsyncClient)
+				.withModelId(model)
 				.build();
 	}
 
