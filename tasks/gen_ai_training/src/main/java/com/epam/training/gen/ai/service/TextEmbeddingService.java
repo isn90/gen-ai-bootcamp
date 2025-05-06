@@ -91,14 +91,14 @@ public class TextEmbeddingService {
         return Objects.requireNonNull(embeddings.block()).getData();
     }
 
-    public List<Points.ScoredPoint> search(String input) throws ExecutionException, InterruptedException {
+    public List<Points.ScoredPoint> search(String input, Optional<String> collectionsName) throws ExecutionException, InterruptedException {
         var inputEmbeddings = new ArrayList<Float>();
         log.info("Start of search");
         retrieveEmbeddings(input).forEach(embeddingItem ->
                 inputEmbeddings.addAll(embeddingItem.getEmbedding())
         );
         List<Points.ScoredPoint> result = qdrantClient.searchAsync(Points.SearchPoints.newBuilder()
-                .setCollectionName(collectionName)
+                .setCollectionName(collectionsName.orElseGet(() -> collectionName))
                 .addAllVector(inputEmbeddings)
                 .setLimit(10)
                 .setWithPayload(enable(true))
