@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -36,6 +37,6 @@ public class TextEmbeddingController {
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public String search(@RequestParam String input) throws ExecutionException, InterruptedException {
-        return textEmbeddingService.search(input).toString();
+        return textEmbeddingService.search(input, Optional.empty()).toString();
     }
 }
